@@ -2,9 +2,13 @@
   "name": "parsel",
   "version": "1.0.0",
   "main": "index.js",
+  "source": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "app": "node app.js"
+    "app": "node src/app.js",
+    "dev": "parcel src/index.html",
+    "start": "parcel",
+    "build": "parcel build src/index.html"
   },
   "repository": {
     "type": "git",
@@ -22,5 +26,13 @@
     "express": "^4.18.2",
     "joi": "^17.7.0",
     "uuid.v4": "^1.0.0"
+  },
+  "devDependencies": {
+    "buffer": "^5.7.1",
+    "crypto-browserify": "^3.12.0",
+    "events": "^3.3.0",
+    "parcel": "^2.8.0",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0"
   }
 }
