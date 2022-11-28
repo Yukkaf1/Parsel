@@ -1,90 +1,46 @@
-var throttle = require('lodash.throttle');
+import { galleryItems } from './gallery-items.js';
+// Change code below this line
+import "./styles.css";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.css";
 
-// const Joi = require('joi');
-// const uuidV4 = require('uuid.v4')
+console.log(galleryItems);
 
-
-// // const passwordSchema = Joi.string()
-// //         .alphanum()
-// //         .min(3)
-// //         .max(5);
-
-// // console.log(passwordSchema.validate("jg123j"));
-
-// // console.log("Hallo");
-
-// // console.log(uuidV4());
-
-// console.log('Hello world!');
-
-
-// // const user = {
-// //     name: 'Mango',
-// //     age: 2
-// // }
-
-// // console.log(JSON.stringify(user));
-
-// localStorage.setItem('my-data', JSON.stringify({ name: 'Mango', age: 2}));
-// // console.log(localStorage.getItem('my-data'));
-
-// const parstData = JSON.parse(localStorage.getItem('my-data'));
-// console.log(parstData);
-
-
-//========
-const STORAGE_KEY = 'feedback';
-const formData = {};
 
 const refs = {
-    form: document.querySelector('.feedback'),
-    textarea: document.querySelector('.textarea'),
-    input: document.querySelector('input'),
+    gallery: document.querySelector(".gallery"),
+}
+
+function createGallery(items ) {
+    const markup = items.map(({preview, original, description}) =>
+        `
+      <a class="gallery__item" 
+      href=${original}>
+        <img
+          class="gallery__image"
+          src=${preview}
+          alt=${description}
+        />
+      </a>
+        `
+    )
+    .join('');
+    return markup
 };
 
-// console.log(refs.form);
-// console.log(refs.textarea);
 
-refs.form.addEventListener('submit', onFormSubmit);
-refs.textarea.addEventListener('input', throttle(onText, 500));
+function galleryView (e) {
+        e.preventDefault(); 
+    };
 
-refs.form.addEventListener('input', (e) => {
-    // console.log(e.target.name);
-    // console.log(e.target.value);
 
-    formData[e.target.name]=e.target.value;
-    
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+const lis =  createGallery(galleryItems);
 
-    console.log(refs.input.value);
-})
+refs.gallery.insertAdjacentHTML('beforeend', lis);
 
-populateTextarea();
+refs.gallery.addEventListener('click', galleryView);
 
-function onFormSubmit(e) {
-    e.preventDefault();
-    console.log(formData);
-    console.log(refs.input.value);
-    e.currentTarget.reset();
-    localStorage.removeItem(STORAGE_KEY);
 
-}
+const lightbox = new SimpleLightbox('.gallery__item', {
+  captionsData: "alt", captionDelay: 250});
 
-function onText(e) {
-    console.log("Hallo text");
-    formData[e.target.name]=e.target.value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-}
-
-// проверить локалхост
-
-function populateTextarea() {
-    const savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    console.log(savedMessage);
-    if(savedMessage) {
-        console.log(savedMessage.name);
-        console.log(savedMessage.message);
-        refs.textarea.value = savedMessage.message;
-        refs.input.value = savedMessage.name;
-    }
-}
